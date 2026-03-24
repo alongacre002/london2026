@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>London Family Trip — March 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #1a2e4a; --gold: #c9a84c; --gold-light: #e8c97a;
+    --cream: #faf8f4; --text: #1a1a1a; --text-mid: #4a4a4a; --text-light: #7a7a7a;
+    --border: #e8e2d8; --orange: #d4703a; --blue: #2e6da4; --green: #2e7a4a;
+    --purple: #5a3e8a; --amber: #b07a20; --red: #8a2e2e; --towerblue: #1a3a5c;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); line-height: 1.6; }
+
+  /* HEADER */
+  .lond-header { background: var(--navy); color: white; padding: 48px 24px 40px; text-align: center; position: relative; overflow: hidden; }
+  .lond-header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(201,168,76,0.12) 0%, transparent 60%), radial-gradient(ellipse at 70% 50%, rgba(201,168,76,0.08) 0%, transparent 60%); pointer-events: none; }
+  .lond-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; }
+  .lond-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(36px, 7vw, 56px); font-weight: 600; color: white; line-height: 1.1; margin-bottom: 10px; }
+  .lond-header-sub { font-size: 14px; color: rgba(255,255,255,0.6); font-weight: 300; }
+  .lond-pills { display: flex; justify-content: center; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+  .lond-pill { background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3); color: var(--gold-light); padding: 5px 14px; border-radius: 20px; font-size: 11px; font-family: 'DM Mono', monospace; letter-spacing: 0.04em; }
+
+  /* TABS */
+  .lond-nav { background: white; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .lond-nav-inner { max-width: 860px; margin: 0 auto; display: flex; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; padding: 0 16px; }
+  .lond-nav-inner::-webkit-scrollbar { display: none; }
+  .lond-tab { flex-shrink: 0; padding: 16px 16px; font-size: 13px; font-weight: 500; color: var(--text-light); cursor: pointer; border-bottom: 2.5px solid transparent; transition: all 0.2s; white-space: nowrap; background: none; border-top: none; border-left: none; border-right: none; font-family: 'DM Sans', sans-serif; }
+  .lond-tab:hover { color: var(--navy); }
+  .lond-tab.active { color: var(--navy); border-bottom-color: var(--gold); }
+
+  /* PANELS */
+  .lond-main { max-width: 860px; margin: 0 auto; padding: 0 24px 64px; }
+  .lond-panel { display: none; padding-top: 36px; }
+  .lond-panel.active { display: block; }
+
+  /* DAY HEADER */
+  .lond-day-header { margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+  .lond-day-label { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 600; color: var(--navy); }
+  .lond-day-sub { font-size: 14px; color: var(--text-light); margin-top: 4px; font-weight: 300; }
+
+  /* TIMELINE */
+  .lond-timeline { display: flex; flex-direction: column; }
+  .lond-tl-item { display: flex; }
+  .lond-tl-left { display: flex; flex-direction: column; align-items: center; width: 60px; flex-shrink: 0; }
+  .lond-tl-time { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-light); margin-top: 3px; text-align: right; width: 48px; }
+  .lond-tl-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; background: var(--border); }
+  .lond-tl-dot.orange { background: var(--orange); }
+  .lond-tl-dot.blue { background: var(--blue); }
+  .lond-tl-dot.green { background: var(--green); }
+  .lond-tl-dot.red { background: var(--red); }
+  .lond-tl-dot.purple { background: var(--purple); }
+  .lond-tl-dot.amber { background: var(--amber); }
+  .lond-tl-dot.navy { background: var(--towerblue); }
+  .lond-tl-line { width: 1px; background: var(--border); flex: 1; min-height: 10px; }
+  .lond-tl-content { padding: 0 0 20px 14px; flex: 1; }
+  .lond-tl-title { font-size: 15px; font-weight: 500; color: var(--navy); margin: 2px 0 4px; line-height: 1.3; }
+  .lond-tl-detail { font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+  .lond-tl-detail a { color: var(--blue); }
+
+  /* BADGES */
+  .lond-badge { display: inline-block; font-size: 10px; font-weight: 500; padding: 2px 6px; border-radius: 4px; margin-left: 5px; vertical-align: middle; font-family: 'DM Mono', monospace; }
+  .lond-badge-book { background: #ddeeff; color: #1a4a7a; }
+  .lond-badge-tip { background: #fff0d0; color: #7a4a00; }
+  .lond-badge-eat { background: #dff0e0; color: #1a5a2a; }
+  .lond-badge-todo { background: #ffe0d8; color: #7a2a1a; }
+
+  /* SIGHTS */
+  .lond-sights { display: flex; gap: 5px; flex-wrap: wrap; margin: 7px 0 0; }
+  .lond-sight { font-size: 10px; background: #f0ede8; border: 1px solid var(--border); border-radius: 4px; padding: 2px 7px; color: var(--text-mid); font-family: 'DM Mono', monospace; }
+
+  /* BOXES */
+  .lond-info-box { background: white; border: 1px solid var(--border); border-left: 3px solid var(--blue); border-radius: 8px; padding: 12px 14px; margin: 0 0 18px; }
+  .lond-info-box .lond-info-title { font-size: 13px; font-weight: 500; color: var(--navy); margin-bottom: 4px; }
+  .lond-info-box .lond-info-item { font-size: 12px; color: var(--text-mid); line-height: 1.6; }
+  .lond-info-box .lond-info-item a { color: var(--blue); }
+  .lond-tip-box { background: #fffbf0; border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; padding: 10px 14px; margin: 6px 0 16px; }
+  .lond-tip-box p { font-size: 13px; color: var(--text-mid); line-height: 1.5; }
+  .lond-warn-box { background: #fff8f0; border-left: 3px solid var(--orange); border-radius: 0 8px 8px 0; padding: 10px 14px; margin: 6px 0 16px; }
+  .lond-warn-box p { font-size: 13px; color: var(--text-mid); line-height: 1.5; }
+
+  /* SECTION HEAD */
+  .lond-section-head { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-light); margin: 24px 0 12px; padding-top: 18px; border-top: 1px solid var(--border); }
+
+  /* EXPANDABLE OPTIONS — uses native <details> for zero-JS expand on mobile */
+  .lond-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .lond-option { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .lond-option summary { list-style: none; padding: 14px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 500; color: var(--navy); user-select: none; -webkit-user-select: none; }
+  .lond-option summary::-webkit-details-marker { display: none; }
+  .lond-option summary::after { content: '▸'; font-size: 12px; color: var(--text-light); transition: transform 0.2s; flex-shrink: 0; margin-left: 8px; }
+  .lond-option[open] summary::after { transform: rotate(90deg); }
+  .lond-option[open] summary { border-bottom: 1px solid var(--border); color: var(--navy); background: #faf8f4; }
+  .lond-option-body { padding: 14px 16px; font-size: 13px; color: var(--text-mid); line-height: 1.65; }
+  .lond-option-body p { margin-bottom: 8px; }
+  .lond-option-body p:last-child { margin-bottom: 0; }
+  .lond-option-body strong { color: var(--text); }
+  .lond-option-body a { color: var(--blue); }
+  .lond-option-body ul { margin: 6px 0 8px 16px; }
+  .lond-option-body ul li { margin-bottom: 4px; }
+
+  /* RESTAURANT + REST GRIDS */
+  .lond-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+  @media (max-width: 540px) { .lond-grid { grid-template-columns: 1fr; } }
+  .lond-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+  .lond-card.planned { border-left: 3px solid var(--gold); }
+  .lond-card-name { font-size: 14px; font-weight: 500; color: var(--navy); }
+  .lond-card-desc { font-size: 12px; color: var(--text-mid); margin-top: 3px; line-height: 1.5; }
+  .lond-card-desc a { color: var(--blue); }
+
+  /* FLIGHT CARDS */
+  .lond-flight { background: var(--navy); border-radius: 12px; padding: 16px 18px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .lond-flight-num { font-family: 'DM Mono', monospace; font-size: 15px; color: var(--gold-light); }
+  .lond-flight-route { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+  .lond-flight-date { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 3px; font-family: 'DM Mono', monospace; }
+  .lond-flight-times { display: flex; align-items: center; gap: 12px; }
+  .lond-flight-time { text-align: center; }
+  .lond-flight-time-main { font-family: 'Playfair Display', serif; font-size: 20px; color: white; }
+  .lond-flight-time-sub { font-size: 10px; color: rgba(255,255,255,0.5); font-family: 'DM Mono', monospace; }
+  .lond-flight-arrow { color: var(--gold); font-size: 16px; }
+
+  /* FOOTER */
+  .lond-footer { background: var(--navy); color: rgba(255,255,255,0.4); text-align: center; padding: 28px 24px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; margin-top: 0; }
+  .lond-footer span { color: var(--gold); }
+
+  @media (max-width: 600px) {
+    .lond-header { padding: 36px 20px 32px; }
+    .lond-main { padding: 0 16px 48px; }
+    .lond-tab { padding: 14px 11px; font-size: 12px; }
+    .lond-tl-left { width: 48px; }
+    .lond-tl-time { width: 36px; font-size: 9px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="lond-header">
+  <div class="lond-eyebrow">Family Trip · March – April 2026</div>
+  <h1>London</h1>
+  <div class="lond-header-sub">7 travellers · 4 adults · 3 teenagers · Mayfair base</div>
+  <div class="lond-pills">
+    <span class="lond-pill">BA0170 · PIT → LHR</span>
+    <span class="lond-pill">1 Derby St, W1J 7AB</span>
+    <span class="lond-pill">BA0171 · LHR → PIT</span>
+  </div>
+</div>
+
+<nav class="lond-nav">
+  <div class="lond-nav-inner">
+    <button class="lond-tab active" onclick="showTab('sun',this)">Sun 3/29</button>
+    <button class="lond-tab" onclick="showTab('mon',this)">Mon 3/30</button>
+    <button class="lond-tab" onclick="showTab('tue',this)">Tue 3/31</button>
+    <button class="lond-tab" onclick="showTab('wed',this)">Wed 4/1</button>
+    <button class="lond-tab" onclick="showTab('thu',this)">Thu 4/2</button>
+    <button class="lond-tab" onclick="showTab('flights',this)">Flights</button>
+    <button class="lond-tab" onclick="showTab('rest',this)">Restaurants</button>
+    <button class="lond-tab" onclick="showTab('tips',this)">Tips</button>
+  </div>
+</nav>
+
+<div class="lond-main">
+
+  <!-- SUNDAY -->
+  <div class="lond-panel active" id="lond-sun">
+    <div class="lond-day-header">
+      <div class="lond-day-label">Sunday, March 29</div>
+      <div class="lond-day-sub">Arrival + Easy London Walk</div>
+    </div>
+    <div class="lond-timeline">
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">10:05</div><div class="lond-tl-dot blue"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Land at Heathrow — Terminal 5</div><p class="lond-tl-detail">BA0170 arrives T5. Clear customs, collect bags. Budget 45–60 min through arrivals.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">11:00</div><div class="lond-tl-dot blue"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Piccadilly Line → Green Park (~50 min)</div><p class="lond-tl-detail">At Heathrow tube station, get Oyster cards for the three kids and ask staff to add the <strong>Young Visitor Discount</strong> (50% off all fares). All three kids must be present. Adults use contactless bank card or Apple/Google Pay — no Oyster needed.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">~1:30</div><div class="lond-tl-dot green"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Check in — 1 Derby St, W1J 7AB</div><p class="lond-tl-detail">Drop bags, freshen up. Green Park tube station is a 6 minute walk from the door.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">3:00</div><div class="lond-tl-dot orange"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Afternoon walk — Green Park → Buckingham Palace → St James's Park</div><p class="lond-tl-detail">~2 miles, easy flat stroll. Perfect introduction to London without overdoing it on day 1. Look for the pelicans near the lake — they've lived in St James's Park since 1664.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">7:00</div><div class="lond-tl-dot red"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content">
+          <div class="lond-tl-title">Dinner — The Old Shades Pub <span class="lond-badge lond-badge-eat">Pub dinner</span></div>
+          <p class="lond-tl-detail" style="margin-top:5px">One of London's oldest pubs, just off Whitehall. Classic British pub food in a historic setting — a perfect first night. <a href="https://www.oldshades.co.uk/food-drink/main-menu" target="_blank">View menu →</a></p>
+        </div>
+      </div>
+    </div>
+    <div class="lond-tip-box"><p>💡 Stay awake until at least 9 PM local time — the single best thing you can do for jet lag. Early night sets Monday up well.</p></div>
+  </div>
+
+  <!-- MONDAY -->
+  <div class="lond-panel" id="lond-mon">
+    <div class="lond-day-header">
+      <div class="lond-day-label">Monday, March 30</div>
+      <div class="lond-day-sub">Westminster + Churchill + Thames → Borough Market + Tower of London</div>
+    </div>
+    <div class="lond-info-box">
+      <div class="lond-info-title">🚤 Uber Boat — no booking needed &nbsp;·&nbsp; 🏰 Tower of London — book online the week before</div>
+      <div class="lond-info-item">Uber Boat: walk up to Westminster Pier and tap on. Runs every 20–30 min. Tower tickets: buy at <a href="https://www.hrp.org.uk/tower-of-london/visit/tickets-and-prices/" target="_blank">hrp.org.uk →</a> the week of travel. Best value: 2× family tickets (2 adults + 3 kids each) ~£87–93 each covers all 7.</div>
+    </div>
+    <div class="lond-timeline">
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">8:00</div><div class="lond-tl-dot green"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Breakfast</div><p class="lond-tl-detail">Focaccia Factory or Caffe In near Derby St.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">9:30</div><div class="lond-tl-dot purple"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content">
+          <div class="lond-tl-title">Churchill War Rooms <span class="lond-badge lond-badge-book">Booked ✓ D79MQ76Y3</span></div>
+          <p class="lond-tl-detail" style="margin-top:5px">Allow 90 min–2 hours. Audio guides included. The underground bunker where Churchill directed WWII — gripping for all ages.</p>
+        </div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">11:30</div><div class="lond-tl-dot orange"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Walk: Westminster Abbey → Big Ben → Parliament → Westminster Pier</div><p class="lond-tl-detail">~15 min walk from War Rooms. Cross Westminster Bridge for the river view, then head to the pier.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">12:15</div><div class="lond-tl-dot blue"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content">
+          <div class="lond-tl-title">Uber Boat — Westminster → London Bridge City Pier</div>
+          <p class="lond-tl-detail">~20 min fast catamaran. Walk up and tap on. Stay on the open back deck. Sights you'll pass:</p>
+          <div class="lond-sights">
+            <span class="lond-sight">London Eye</span><span class="lond-sight">Embankment</span><span class="lond-sight">Waterloo Bridge</span>
+            <span class="lond-sight">St Paul's Cathedral</span><span class="lond-sight">Tate Modern</span><span class="lond-sight">Millennium Bridge</span>
+            <span class="lond-sight">Shakespeare's Globe</span><span class="lond-sight">The Shard</span><span class="lond-sight">Tower Bridge</span>
+          </div>
+        </div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">12:45</div><div class="lond-tl-dot amber"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content">
+          <div class="lond-tl-title">Borough Market <span class="lond-badge lond-badge-eat">Lunch</span></div>
+          <p class="lond-tl-detail" style="margin-top:5px">2 min walk from the pier. Everyone picks their own — great for a group. Keep it to 45–60 min today. Don't miss: Kappacasein cheese toasties, Monmouth Coffee, charcuterie stalls.</p>
+        </div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">2:00</div><div class="lond-tl-dot orange"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Walk to Tower of London — ~15 min</div><p class="lond-tl-detail">Head east along the South Bank — past London Bridge, Southwark Cathedral, under Tower Bridge. The Tower walls rise up on your left.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">2:15</div><div class="lond-tl-dot navy"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content">
+          <div class="lond-tl-title">Tower of London <span class="lond-badge lond-badge-todo">Book tickets online</span></div>
+          <p class="lond-tl-detail" style="margin-top:5px">Allow 2–2.5 hours. Included: Crown Jewels, White Tower with Henry VIII's armour, Bloody Tower, Torture exhibition, battlements, and the ravens. <strong>Find the Beefeater tour immediately on arrival</strong> — runs every 30 min from the main entrance, ~45 min of gruesome, funny, unforgettable storytelling.</p>
+        </div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">4:45</div><div class="lond-tl-dot blue"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Return to base</div><p class="lond-tl-detail">Tube from Tower Hill station (3 min walk from Tower exit) → Green Park. ~20 min.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">7:00</div><div class="lond-tl-dot red"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Dinner — near Derby St</div><p class="lond-tl-detail">After a very full day — <strong>Burger &amp; Lobster</strong> or <strong>Bocconcino</strong> for Italian. Easy, walkable, no stress for 7.</p></div>
+      </div>
+    </div>
+    <div class="lond-tip-box"><p>💡 Arriving at the Tower around 2 PM avoids the morning rush. Buy tickets online the week before to walk straight past the queue.</p></div>
+  </div>
+
+  <!-- TUESDAY -->
+  <div class="lond-panel" id="lond-tue">
+    <div class="lond-day-header">
+      <div class="lond-day-label">Tuesday, March 31</div>
+      <div class="lond-day-sub">Changing of the Guard + Flexible Afternoon + Ciccaro</div>
+    </div>
+    <div class="lond-timeline">
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">8:30</div><div class="lond-tl-dot green"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Breakfast near Derby St</div><p class="lond-tl-detail"><strong>The Wolseley</strong> on Piccadilly — London institution, elegant but relaxed. Or grab something casual and save it for another day.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">10:15</div><div class="lond-tl-dot orange"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Walk to Buckingham Palace — arrive by 10:15</div><p class="lond-tl-detail">~6 min walk from Derby St. Stake out a spot on the palace rail or Victoria Memorial steps. The approach march from Wellington Barracks via Birdcage Walk is often less crowded than the forecourt.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">10:45</div><div class="lond-tl-dot purple"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content">
+          <div class="lond-tl-title">Changing of the Guard <span class="lond-badge lond-badge-tip">Free</span></div>
+          <p class="lond-tl-detail" style="margin-top:5px">~1 hour ceremony. Confirm the day before — occasionally cancelled. <a href="https://www.householddivision.org.uk" target="_blank">Check at householddivision.org.uk →</a></p>
+        </div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">12:00</div><div class="lond-tl-dot orange"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Afternoon — tap an option below to see details</div><p class="lond-tl-detail">Choose based on energy and what the kids want after Monday's big day.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">7:00</div><div class="lond-tl-dot red"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content">
+          <div class="lond-tl-title">Dinner — Ciccaro Piccadilly <span class="lond-badge lond-badge-eat">Italian</span></div>
+          <p class="lond-tl-detail" style="margin-top:5px">Formerly Cicchetti Piccadilly — cosy old-world Italian just off Regent Street, a short walk from Derby St. Venetian-style sharing plates: pasta, seafood, fritto misto. Relaxed, lively, great for kids and adults. Book ahead for 7. <a href="https://www.opentable.co.uk/r/cicchetti-piccadilly-london" target="_blank">Book on OpenTable →</a></p>
+        </div>
+      </div>
+    </div>
+    <div class="lond-tip-box"><p>💡 Sharing plates is perfect for a mixed group — order a big spread and everyone tries what they like. Works for picky and adventurous eaters alike.</p></div>
+
+    <div class="lond-section-head">Tuesday Afternoon — tap to expand each option</div>
+    <div class="lond-options">
+
+      <details class="lond-option">
+        <summary>🏛 National Gallery + Trafalgar Square</summary>
+        <div class="lond-option-body">
+          <p><strong>Walk there:</strong> Easy 15–20 min walk from Buckingham Palace via St James's Park and The Mall. One of the most pleasant walks in London.</p>
+          <p><strong>The National Gallery</strong> is free entry and houses one of the world's greatest art collections — Van Gogh's Sunflowers, Monet's water lilies, da Vinci, Rembrandt. You don't need to be an art person to appreciate it. Allow 1–1.5 hours. The kids don't need to see everything — pick a few rooms and move on.</p>
+          <p><strong>Trafalgar Square</strong> is right outside — one of London's great public spaces. The four giant bronze lions at the base of Nelson's Column are a must for a family photo. The fountains are beautiful and there's usually something going on. It's also the hub for buskers and street performers.</p>
+          <p><strong>For lunch:</strong> The National Portrait Gallery is right next door and has a good café. Or grab something from one of the spots around the square and eat outside if the weather cooperates.</p>
+          <p><strong>Good for:</strong> All three kids, though the 14 and 15 year olds will get more out of the gallery. The 11-year-old will love the lions and the square regardless.</p>
+        </div>
+      </details>
+
+      <details class="lond-option">
+        <summary>🎭 Covent Garden</summary>
+        <div class="lond-option-body">
+          <p><strong>Getting there:</strong> About 20–25 min walk from Buckingham Palace, or one tube stop from Westminster or Green Park. Easy to reach from anywhere in the afternoon.</p>
+          <p><strong>The Piazza:</strong> The heart of Covent Garden has some of the best street performers in London — acrobats, magicians, comedians, musicians. Acts perform on a raised stone platform and rotate through every 30–40 minutes. No cost, but the crowd tips at the end. The 11-year-old will be completely transfixed. Acts vary day to day but Monday through Friday afternoons are reliably busy.</p>
+          <p><strong>The Market Building:</strong> Three floors of independent shops, art, jewellery and clothing. Good for the 14 and 15 year olds to browse at their own pace while adults grab a coffee at one of the surrounding cafés. The lower ground floor has the Apple Market with craft stalls.</p>
+          <p><strong>Neal's Yard:</strong> A 5-minute walk north from the piazza — a tiny hidden courtyard with brightly painted buildings. Worth finding. Great photo moment and the kids will appreciate the "hidden London" feel. Head up Shorts Gardens from the market building.</p>
+          <p><strong>Seven Dials:</strong> Just northwest of the market — a junction of seven streets lined with independent shops, vintage clothing, and bookshops. More interesting than the main tourist drag and good for the teenagers who want to feel like they're discovering something.</p>
+          <p><strong>For lunch:</strong> Dishoom (5 min walk, Indian comfort food, always a hit with teens — expect a short queue), Shake Shack is right in the market building, or plenty of casual options in the covered market itself.</p>
+          <p><strong>Good for:</strong> All three kids, different things for different ages. The 11-year-old for the performers, the older two for the shopping and exploring.</p>
+        </div>
+      </details>
+
+      <details class="lond-option">
+        <summary>🎨 V&A Museum</summary>
+        <div class="lond-option-body">
+          <p><strong>Getting there:</strong> Tube from Green Park or Victoria → South Kensington (District/Piccadilly). The museum is a 5 min walk from the station through a covered tunnel.</p>
+          <p><strong>The building itself</strong> is extraordinary — a Victorian palace of art and design. Even if the kids aren't natural museum-goers, walking through the grand halls is an experience. The main entrance hall alone is worth it.</p>
+          <p><strong>Best sections for your age group:</strong></p>
+          <ul>
+            <li><strong>Fashion galleries</strong> — centuries of clothing and costume, always a hit with teenagers</li>
+            <li><strong>Medieval &amp; Renaissance rooms</strong> — armour, jewellery, tapestries, intricate objects</li>
+            <li><strong>Cast Courts</strong> — enormous hall filled with plaster casts of famous sculptures including a full-size Trajan's Column. Genuinely jaw-dropping room</li>
+            <li><strong>Jewellery gallery</strong> — tiaras, gemstones, historic pieces from around the world</li>
+          </ul>
+          <p><strong>Natural History Museum</strong> is literally next door if the group wants to split — the 11-year-old in particular might prefer the dinosaurs and the blue whale. Both are free. You could do an hour in each.</p>
+          <p><strong>Dinner logistics bonus:</strong> South Kensington to Fulham Broadway is one stop on the District line — useful if you ever revisit dinner options in that direction.</p>
+          <p><strong>Good for:</strong> All ages, but especially the 14 and 15 year olds. The Cast Courts alone justify the visit.</p>
+        </div>
+      </details>
+
+      <details class="lond-option">
+        <summary>☕ Downtime in Mayfair</summary>
+        <div class="lond-option-body">
+          <p>After two very full days — Churchill, the Thames, Borough Market, the Tower of London, and Changing of the Guard — an afternoon off is completely legitimate. Don't feel you have to fill every hour.</p>
+          <p><strong>Shepherd Market</strong> is the best option for a relaxed wander. It's a tiny village tucked behind Curzon Street, about 5 minutes walk from Derby St. Cobblestone lanes, independent cafés, wine bars and bistros, a few boutiques. Sit at an outdoor table, have a coffee or a glass of wine, let the kids explore the little streets. It feels nothing like tourist London and it's literally on your doorstep.</p>
+          <p><strong>Green Park</strong> — bring a blanket and just sit. In late March the daffodils are usually out. The kids can decompress, the adults can decompress. You're back at the Airbnb in minutes whenever you're ready.</p>
+          <p><strong>Fortnum &amp; Mason</strong> on Piccadilly is worth 30–40 minutes if anyone has energy for a wander. The food halls are extraordinary — biscuit tins, preserves, teas, hampers. The kids usually find it fascinating in a "this is extremely British" way. Free to browse, and you can pick up tea or shortbread to take home.</p>
+          <p><strong>Bond Street / South Molton Street</strong> — if the 14 and 15 year olds have any appetite for shopping or window shopping, this is 10 minutes walk. South Molton Street is a pedestrianised strip with a more interesting mix than the very high-end Bond Street itself.</p>
+          <p><strong>Good for:</strong> Everyone. Sometimes the best travel moments are the unplanned ones. Save the energy for a good dinner at Ciccaro.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- WEDNESDAY -->
+  <div class="lond-panel" id="lond-wed">
+    <div class="lond-day-header">
+      <div class="lond-day-label">Wednesday, April 1</div>
+      <div class="lond-day-sub">Abbey Road + North London + Farewell Dinner</div>
+    </div>
+    <div class="lond-timeline">
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">7:30</div><div class="lond-tl-dot green"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Early breakfast — then head north</div><p class="lond-tl-detail">Quick breakfast near the Airbnb. You want to be at Abbey Road before 9 AM.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">8:30</div><div class="lond-tl-dot blue"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Tube: Green Park → Jubilee Line → St John's Wood</div><p class="lond-tl-detail">~20 min. The crossing is a 2 min walk from the station exit.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">~8:50</div><div class="lond-tl-dot orange"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content">
+          <div class="lond-tl-title">Abbey Road Crossing <span class="lond-badge lond-badge-tip">Before 9 AM</span></div>
+          <p class="lond-tl-detail" style="margin-top:5px">A 7-person family crossing is genuinely iconic. Designate one adult as photographer on the pavement. Real traffic passes — move quickly. The studio wall covered in fan messages is worth a look.</p>
+        </div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">10:00</div><div class="lond-tl-dot orange"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Primrose Hill</div><p class="lond-tl-detail">~15 min walk from Abbey Road. One of the best panoramic views of London. Grab a coffee from a nearby café and walk up slowly. Great group photo at the top.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">11:30</div><div class="lond-tl-dot green"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Lunch — Primrose Hill village or Camden Market</div><p class="lond-tl-detail"><strong>Primrose Hill village</strong> — quiet, residential, lovely local cafés. <strong>Camden Market</strong> is 15 min walk south — louder, more teenage energy, great street food. Kids usually pick Camden.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">1:30</div><div class="lond-tl-dot orange"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Afternoon — tap an option below to see details</div></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">7:30</div><div class="lond-tl-dot red"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Farewell Dinner — Mayfair or Covent Garden</div><p class="lond-tl-detail">Make the last dinner count. <strong>Langan's Brasserie</strong> or <strong>Lanes of London</strong> for something special. <strong>Mercato Mayfair</strong> food hall if the group wants variety with zero booking pressure.</p></div>
+      </div>
+    </div>
+
+    <div class="lond-section-head">Wednesday Afternoon — tap to expand each option</div>
+    <div class="lond-options">
+
+      <details class="lond-option">
+        <summary>🛍 Camden Market</summary>
+        <div class="lond-option-body">
+          <p><strong>Getting there:</strong> From Primrose Hill, it's a 15 min walk south down Regent's Park Road into Camden. Or tube from Camden Town station back to the area after lunch if you've wandered.</p>
+          <p><strong>The market itself</strong> is actually a collection of several interconnected market areas — the main Camden Market, the Stables Market (the biggest and most interesting, housed in old horse stables and railway arches), and Camden Lock Market by the canal. Allow 2 hours to properly explore.</p>
+          <p><strong>For the 14 and 15 year olds:</strong> Vintage clothing, band merch, independent music shops, street art, alternative fashion, tattoo studios to look at from the outside. This is genuinely their territory. Give them some space to explore independently — Camden is very safe and very busy.</p>
+          <p><strong>For the 11-year-old:</strong> The food stalls, the general chaos and colour, watching the older teens react to things, the canal boats on Regent's Canal. Still enjoyable, just a different experience.</p>
+          <p><strong>Food:</strong> If you haven't eaten properly at lunch, the market has extraordinary street food from dozens of stalls — Korean, Japanese, Ethiopian, Mexican, Caribbean, jerk chicken, pulled pork, crepes, churros. One of the best places in London for a casual afternoon feed.</p>
+          <p><strong>Return to base:</strong> Camden Town tube → Northern Line → Leicester Square → Piccadilly Line → Green Park. About 20–25 min.</p>
+          <p><strong>Good for:</strong> The best option for the teenagers specifically. The 14 and 15 year olds will remember Camden.</p>
+        </div>
+      </details>
+
+      <details class="lond-option">
+        <summary>🏺 British Museum</summary>
+        <div class="lond-option-body">
+          <p><strong>Getting there:</strong> From Camden, tube from Camden Town → Northern Line → Tottenham Court Road, then walk 10 min, or from Primrose Hill area take a bus south. About 30–40 min from North London.</p>
+          <p><strong>Free entry.</strong> One of the greatest museums in the world — the Egyptian collection alone justifies the visit. Allow 2–3 hours for a good visit without rushing.</p>
+          <p><strong>Best sections for your age group:</strong></p>
+          <ul>
+            <li><strong>Egyptian mummies</strong> — Room 62–63. The 11-year-old will love this. Real mummies, sarcophagi, canopic jars, mummified animals. Genuinely fascinating.</li>
+            <li><strong>Rosetta Stone</strong> — Room 4 near the main entrance. The actual stone that cracked Egyptian hieroglyphics. Worth a stop.</li>
+            <li><strong>Lewis Chessmen</strong> — medieval chess pieces, found on a Scottish island. Small but remarkable objects and the 11-year-old especially will connect with them.</li>
+            <li><strong>Sutton Hoo helmet</strong> — Anglo-Saxon warrior's helmet, one of the most iconic objects in the museum. Room 41.</li>
+            <li><strong>Greek antiquities</strong> — the Elgin Marbles (Parthenon sculptures) in Room 18. Monumental. Worth seeing regardless of where you stand on the repatriation debate.</li>
+          </ul>
+          <p><strong>Practical tip:</strong> The Great Court (central glass-roofed courtyard) is worth seeing even if you only have 20 minutes. The café there is good for a break.</p>
+          <p><strong>Return to base:</strong> Tottenham Court Road tube → Central Line → Bond Street → Green Park. 15 min.</p>
+          <p><strong>Good for:</strong> All three ages — the variety of the collection means everyone finds something. Best option if the weather is poor.</p>
+        </div>
+      </details>
+
+      <details class="lond-option">
+        <summary>🌿 Hampstead Heath</summary>
+        <div class="lond-option-body">
+          <p><strong>Getting there:</strong> From Primrose Hill or Camden, bus or tube to Hampstead (Northern Line → Hampstead station). The Heath is a short walk from the station.</p>
+          <p><strong>What it is:</strong> 790 acres of wild, open parkland on a hill north of London. Unlike the manicured royal parks, Hampstead Heath feels genuinely wild — ancient woodland, meadows, ponds, and hills. It's where Londoners go when they want to feel like they've escaped the city.</p>
+          <p><strong>Parliament Hill:</strong> The highest point, with one of the best views of the London skyline anywhere — a wide panorama looking south across the entire city. On a clear day you can see Canary Wharf, the Shard, St Paul's, and the Wembley arch. Great spot for a group photo. The kite-flying here is legendary.</p>
+          <p><strong>For the kids:</strong> The Heath has a real "adventure" quality — paths through woods, unexpected views, the feeling of being genuinely off the tourist trail. The 14 and 15 year olds tend to appreciate it more than they expect. The 11-year-old will enjoy the freedom to run around.</p>
+          <p><strong>Kenwood House:</strong> A beautiful 18th century mansion on the northern edge of the Heath, free to enter. Houses a small but excellent art collection including a Rembrandt self-portrait. Good for a 30-min detour if anyone is interested.</p>
+          <p><strong>Practical note:</strong> Wear comfortable shoes — the Heath has uneven ground. Late March can be muddy after rain.</p>
+          <p><strong>Return to base:</strong> Hampstead tube → Northern Line → Leicester Square → Piccadilly → Green Park. About 25–30 min.</p>
+          <p><strong>Good for:</strong> Best option if the weather is genuinely good. A real London experience away from the tourist circuit.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- THURSDAY -->
+  <div class="lond-panel" id="lond-thu">
+    <div class="lond-day-header">
+      <div class="lond-day-label">Thursday, April 2</div>
+      <div class="lond-day-sub">Departure Day — zero stress</div>
+    </div>
+    <div class="lond-timeline">
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">Morning</div><div class="lond-tl-dot green"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Final morning — pack and relax</div><p class="lond-tl-detail">Bags packed from the night before. <strong>Timmy Green</strong> for a final brunch (Aussie café, excellent), or Caffe In for something quick. One last walk through Green Park if time allows.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">12:30</div><div class="lond-tl-dot orange"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Leave Derby St</div><p class="lond-tl-detail">Walk to Green Park station — 6 min. Don't leave later than this with 7 people and luggage.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">12:40</div><div class="lond-tl-dot blue"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Piccadilly Line → Heathrow Terminal 5</div><p class="lond-tl-detail">~50 min direct. T5 is the last stop — no changes needed.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">~1:45</div><div class="lond-tl-dot green"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">Arrive Heathrow T5 — ~3 hours before flight</div><p class="lond-tl-detail">Perfect buffer. International security at T5 can be slow — this cushion is right for a group of 7. Time for a last meal, duty free, and the gate.</p></div>
+      </div>
+      <div class="lond-tl-item">
+        <div class="lond-tl-left"><div class="lond-tl-time">16:40</div><div class="lond-tl-dot blue"></div><div class="lond-tl-line"></div></div>
+        <div class="lond-tl-content"><div class="lond-tl-title">BA0171 departs — LHR T5 → Pittsburgh</div><p class="lond-tl-detail">Arrives Pittsburgh (PIT) at 19:50 local time.</p></div>
+      </div>
+    </div>
+    <div class="lond-tip-box"><p>💡 Download boarding passes offline the night before — one less thing to worry about in the morning rush.</p></div>
+  </div>
+
+  <!-- FLIGHTS -->
+  <div class="lond-panel" id="lond-flights">
+    <div class="lond-day-header">
+      <div class="lond-day-label">Flight Details</div>
+      <div class="lond-day-sub">British Airways · World Traveller · Both confirmed</div>
+    </div>
+    <div class="lond-flight">
+      <div>
+        <div class="lond-flight-num">BA0170</div>
+        <div class="lond-flight-route">Pittsburgh (PIT) → London Heathrow T5 (LHR)</div>
+        <div class="lond-flight-date">Sat 28 Mar → Sun 29 Mar 2026</div>
+      </div>
+      <div class="lond-flight-times">
+        <div class="lond-flight-time"><div class="lond-flight-time-main">21:45</div><div class="lond-flight-time-sub">PIT · Sat</div></div>
+        <div class="lond-flight-arrow">→</div>
+        <div class="lond-flight-time"><div class="lond-flight-time-main">10:05</div><div class="lond-flight-time-sub">LHR T5 · Sun</div></div>
+      </div>
+    </div>
+    <div class="lond-flight">
+      <div>
+        <div class="lond-flight-num">BA0171</div>
+        <div class="lond-flight-route">London Heathrow T5 (LHR) → Pittsburgh (PIT)</div>
+        <div class="lond-flight-date">Thu 2 Apr 2026</div>
+      </div>
+      <div class="lond-flight-times">
+        <div class="lond-flight-time"><div class="lond-flight-time-main">16:40</div><div class="lond-flight-time-sub">LHR T5 · Thu</div></div>
+        <div class="lond-flight-arrow">→</div>
+        <div class="lond-flight-time"><div class="lond-flight-time-main">19:50</div><div class="lond-flight-time-sub">PIT · Thu</div></div>
+      </div>
+    </div>
+    <div class="lond-section-head">Transport Notes</div>
+    <div class="lond-grid">
+      <div class="lond-card"><div class="lond-card-name">Arrival — Sunday</div><div class="lond-card-desc">Piccadilly Line from T5 direct to Green Park, ~50 min, no changes. Get kids' Oyster cards + Young Visitor Discount at Heathrow tube station — all three kids must be present.</div></div>
+      <div class="lond-card"><div class="lond-card-name">Departure — Thursday</div><div class="lond-card-desc">Piccadilly Line from Green Park to T5 — last stop, no changes. Leave Derby St by 12:30 PM for a comfortable 3-hour buffer before the 4:40 PM flight.</div></div>
+    </div>
+  </div>
+
+  <!-- RESTAURANTS -->
+  <div class="lond-panel" id="lond-rest">
+    <div class="lond-day-header">
+      <div class="lond-day-label">Restaurant Guide</div>
+      <div class="lond-day-sub">Near Derby St / Mayfair — lower tourist-trap factor</div>
+    </div>
+    <div class="lond-section-head" style="margin-top:0;padding-top:0;border-top:none">Planned Dinners</div>
+    <div class="lond-grid">
+      <div class="lond-card planned"><div class="lond-card-name">The Old Shades</div><div class="lond-card-desc">Sunday arrival dinner. Historic pub off Whitehall. Classic British pub food, great first night. <a href="https://www.oldshades.co.uk/food-drink/main-menu" target="_blank">Menu →</a></div></div>
+      <div class="lond-card planned"><div class="lond-card-name">Ciccaro Piccadilly</div><div class="lond-card-desc">Tuesday dinner. Italian sharing plates, just off Regent St. Book for 7. <a href="https://www.opentable.co.uk/r/cicchetti-piccadilly-london" target="_blank">OpenTable →</a></div></div>
+    </div>
+    <div class="lond-section-head">Casual &amp; Easy for a Group</div>
+    <div class="lond-grid">
+      <div class="lond-card"><div class="lond-card-name">Burger &amp; Lobster Mayfair</div><div class="lond-card-desc">Teens love it. Lobster or burger, done brilliantly. Good Monday fallback after the Tower.</div></div>
+      <div class="lond-card"><div class="lond-card-name">Titu</div><div class="lond-card-desc">Pan-Asian, popular with locals. Great for a relaxed evening after a long day.</div></div>
+      <div class="lond-card"><div class="lond-card-name">Bocconcino Mayfair</div><div class="lond-card-desc">Reliable Italian, family-friendly, informal. Good pizza and pasta for varied tastes.</div></div>
+      <div class="lond-card"><div class="lond-card-name">Timmy Green</div><div class="lond-card-desc">Aussie café. Excellent for brunch or a casual dinner. Good veggie options.</div></div>
+      <div class="lond-card"><div class="lond-card-name">Mercato Mayfair</div><div class="lond-card-desc">Food hall — everyone picks their own. Zero booking stress for 7. Good Wednesday option.</div></div>
+      <div class="lond-card"><div class="lond-card-name">Sofra</div><div class="lond-card-desc">Middle Eastern, local fan base, good value. Less mainstream than most options.</div></div>
+    </div>
+    <div class="lond-section-head">Distinctive / Book Ahead</div>
+    <div class="lond-grid">
+      <div class="lond-card"><div class="lond-card-name">The Wolseley</div><div class="lond-card-desc">Classic British brasserie on Piccadilly. Best for a special breakfast or brunch.</div></div>
+      <div class="lond-card"><div class="lond-card-name">Kitty Fisher's</div><div class="lond-card-desc">Modern British, Shepherd Market. Small room — book ahead. Great for a special dinner.</div></div>
+      <div class="lond-card"><div class="lond-card-name">Langan's Brasserie</div><div class="lond-card-desc">Stylish French brasserie, loyal UK crowd. Good Wednesday farewell dinner.</div></div>
+      <div class="lond-card"><div class="lond-card-name">Lanes of London</div><div class="lond-card-desc">Modern British/European. Local favourite, less touristy than it looks.</div></div>
+      <div class="lond-card"><div class="lond-card-name">Iran Restaurant</div><div class="lond-card-desc">Highly regarded Persian — loved by London foodies. Different and memorable.</div></div>
+      <div class="lond-card"><div class="lond-card-name">The Harwood Arms ★</div><div class="lond-card-desc">London's only Michelin-starred pub in Fulham. Game-focused menu — for a very special occasion.</div></div>
+    </div>
+    <div class="lond-tip-box"><p>💡 For a group of 7, always call ahead or book online. Most are on OpenTable or Resy.</p></div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="lond-panel" id="lond-tips">
+    <div class="lond-day-header">
+      <div class="lond-day-label">Essential Tips</div>
+      <div class="lond-day-sub">Transport, bookings and things to know</div>
+    </div>
+    <div class="lond-section-head" style="margin-top:0;padding-top:0;border-top:none">Getting Around</div>
+    <div class="lond-grid">
+      <div class="lond-card"><div class="lond-card-name">Adults — Use Contactless</div><div class="lond-card-desc">Tap your bank card or Apple/Google Pay on the yellow readers. TfL caps spend at £8.90/day (zones 1–2) automatically. Chase is TfL's official payment partner — works perfectly.</div></div>
+      <div class="lond-card"><div class="lond-card-name">Kids (11, 14, 15) — Oyster Cards</div><div class="lond-card-desc">Get Oyster cards at Heathrow T5 tube station on arrival. Ask for the <strong>Young Visitor Discount</strong> — 50% off all fares. All three kids must be present. £7/card.</div></div>
+      <div class="lond-card"><div class="lond-card-name">Bus Hopper Fare</div><div class="lond-card-desc">Changing buses within 60 minutes counts as one fare. Daily bus cap is £5.25 — unlimited buses after that. Great value.</div></div>
+      <div class="lond-card"><div class="lond-card-name">Apple Pay Express Transit</div><div class="lond-card-desc">Set up in Settings → Wallet & Apple Pay before the trip. Taps without Face ID — as fast as Oyster. Older kids can use this but won't get the 50% discount.</div></div>
+    </div>
+    <div class="lond-section-head">Bookings Checklist</div>
+    <div class="lond-grid">
+      <div class="lond-card"><div class="lond-card-name">✅ Churchill War Rooms</div><div class="lond-card-desc">Booked. Ref: <strong>D79MQ76Y3</strong>. Monday 30 March, 9:30 AM.</div></div>
+      <div class="lond-card"><div class="lond-card-name">📋 Tower of London</div><div class="lond-card-desc">Buy online at <a href="https://www.hrp.org.uk/tower-of-london/visit/tickets-and-prices/" target="_blank">hrp.org.uk</a> the week before. 2× family tickets covers all 7 (~£87–93 each).</div></div>
+      <div class="lond-card"><div class="lond-card-name">📋 Ciccaro Piccadilly</div><div class="lond-card-desc">Tuesday dinner. <a href="https://www.opentable.co.uk/r/cicchetti-piccadilly-london" target="_blank">Book on OpenTable</a> for 7 at 7 PM.</div></div>
+      <div class="lond-card"><div class="lond-card-name">📋 Changing of the Guard</div><div class="lond-card-desc">Free. Confirm at <a href="https://www.householddivision.org.uk" target="_blank">householddivision.org.uk</a> the day before — occasionally cancelled.</div></div>
+      <div class="lond-card"><div class="lond-card-name">📋 Wednesday Farewell Dinner</div><div class="lond-card-desc">Langan's or Lanes of London — book ahead. Mercato Mayfair is walk-in friendly.</div></div>
+      <div class="lond-card"><div class="lond-card-name">📋 Uber Boat</div><div class="lond-card-desc">No booking needed. Walk up to Westminster Pier Monday. Check <a href="https://www.thamesclippers.com/plan-your-journey/timetable" target="_blank">timetable</a> the day before.</div></div>
+    </div>
+    <div class="lond-section-head">Good to Know</div>
+    <div class="lond-grid">
+      <div class="lond-card"><div class="lond-card-name">Weather in Late March</div><div class="lond-card-desc">London averages 10–14°C (50–57°F). Layers and a light waterproof for everyone. The Uber Boat will be chilly even on a sunny day.</div></div>
+      <div class="lond-card"><div class="lond-card-name">Card Clash</div><div class="lond-card-desc">Keep Oyster or contactless card separate from other cards in your wallet. Two cards near the reader at once = both get charged.</div></div>
+      <div class="lond-card"><div class="lond-card-name">Always Tap Out</div><div class="lond-card-desc">Tube: tap in AND out at yellow readers. Forgetting to tap out = maximum fare charged. Buses: tap in only.</div></div>
+      <div class="lond-card"><div class="lond-card-name">Borough Market Hours</div><div class="lond-card-desc">Open Mon–Sat. Monday ~10 AM–5 PM — stalls pack up around 3 PM. Aim to arrive by 1 PM for lunch.</div></div>
+    </div>
+    <div class="lond-tip-box"><p>💡 <strong>Base:</strong> 1 Derby St, W1J 7AB &nbsp;·&nbsp; <strong>Nearest tube:</strong> Green Park (Jubilee, Victoria, Piccadilly) &nbsp;·&nbsp; <strong>Walk to station:</strong> 6 min</p></div>
+  </div>
+
+</div><!-- /lond-main -->
+
+<div class="lond-footer">
+  London · <span>March 29 – April 2, 2026</span> · 7 travellers · Pittsburgh ✈ London
+</div>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.lond-panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.lond-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById('lond-' + id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
